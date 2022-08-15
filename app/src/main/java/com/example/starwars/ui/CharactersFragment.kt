@@ -3,6 +3,7 @@ package com.example.starwars.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +23,7 @@ class CharactersFragment : Fragment(R.layout.fragment_characters_layout) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as MainActivity).charactersViewModel
-       // viewModel.getStarWarCharacters()
+
         setUpNewsAdapter()
 
         viewModel.charactersLiveData.observe(viewLifecycleOwner) { response ->
@@ -38,7 +39,10 @@ class CharactersFragment : Fragment(R.layout.fragment_characters_layout) {
                     hideProgress()
                     response.message?.let {
                         Log.e("news error", it)
+                        Toast.makeText(activity,it,Toast.LENGTH_LONG).show()
                     }
+                    tvErrorInfo.visibility = View.VISIBLE
+                    btnTryAgain.visibility = View.VISIBLE
 
                 }
                 is Resource.Loading -> {
@@ -47,6 +51,8 @@ class CharactersFragment : Fragment(R.layout.fragment_characters_layout) {
                 else -> {}
             }
         }
+
+        btnTryAgain.setOnClickListener { viewModel.getStarWarCharacters() }
     }
 
     private fun setUpNewsAdapter() {
@@ -66,9 +72,13 @@ class CharactersFragment : Fragment(R.layout.fragment_characters_layout) {
 
     private fun hideProgress() {
         progressBar.visibility = View.INVISIBLE
+        tvErrorInfo.visibility = View.INVISIBLE
+        btnTryAgain.visibility = View.INVISIBLE
     }
 
     private fun showProgress() {
         progressBar.visibility = View.VISIBLE
+        tvErrorInfo.visibility = View.INVISIBLE
+        btnTryAgain.visibility = View.INVISIBLE
     }
 }

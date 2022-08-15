@@ -19,8 +19,13 @@ class CharactersViewModel(private val starWarRepository: StarWarRepository) : Vi
 
     fun getStarWarCharacters() = viewModelScope.launch {
         charactersLiveData.postValue(Resource.Loading())
-        val response = starWarRepository.getStarWarCharacters()
-        charactersLiveData.postValue(handleNewsResponse(response))
+        try{
+            val response = starWarRepository.getStarWarCharacters()
+            charactersLiveData.postValue(handleNewsResponse(response))
+        }catch (e:Exception){
+            charactersLiveData.postValue(Resource.Error("An Error"))
+        }
+
     }
 
     private fun handleNewsResponse(response : Response<CharactersResponse>) : Resource<CharactersResponse>{

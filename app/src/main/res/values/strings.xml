@@ -4,4 +4,6 @@
     <string name="character_height_label">Height in metres : </string>
     <string name="character_weight_label">Mass in kg : </string>
     <string name="character_created_date_label">Created date : </string>
+    <string name="error">Oops ! Some thing went Wrong.</string>
+    <string name="try_again">Try Again</string>
 </resources>
